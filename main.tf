@@ -1,7 +1,7 @@
 #AWS credentials
 provider "aws" {
-    access_key = "AKIAXVOVW3WSEWNPO3VB"
-    secret_key = "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"
+    access_key = "xxxxxxx"
+    secret_key = "xxxxxxxxxx"
     region = "ap-south-1"
 }
 
@@ -42,6 +42,36 @@ resource "aws_subnet" "private_subnet" {
     }
 }
 
+#Routing Table resource section. resource name "public_routing_table"
+resource "aws_route_table" "public_routing_table" {
+    vpc_id = "${aws_vpc.VPC.id}"
+    route {
+        cidr_block = "0.0.0.0/0"
+        gateway_id = "${aws_internet_gateway.IGW.id}"
+    }
+    tags = {
+        Name = "public_routing_table"
+    }
+}
+
+resource "aws_route_table" "private_routing_table" {
+    vpc_id = "${aws_vpc.VPC.id}"
+    tags = {
+        Name = "private_routing_table"
+    }
+}
+
+
+resource "aws_route_table_association" "terraform-public" {
+    subnet_id = "${aws_subnet.public_subnet.id}"
+    route_table_id = "${aws_route_table.public_routing_table.id}"
+}
+
+resource "aws_route_table_association" "terraform-private" {
+    subnet_id = "${aws_subnet.private_subnet.id}"
+    route_table_id = "${aws_route_table.private_routing_table.id}"
+}
+
 #Security Group resource section. resource name is "sg"
 resource "aws_security_group" "sg" {
   name        = "allow_all"
@@ -64,12 +94,12 @@ resource "aws_security_group" "sg" {
 }
 
 # Ec2 instance resource section. recource name is "Ubuntu_Server" 
-resource "aws_instance" "Ubuntu_Server" {
+resource "aws_instance" "ubuntu_Server" {
     ami = "ami-08ee6644906ff4d6c"
     instance_type = "t2.micro"
     key_name = "Ranjith"
     subnet_id = "${aws_subnet.public_subnet.id}"
-   # vpc_security_group_ids = "${aws_security_group.sg.id}"
+    vpc_security_group_ids = ["${aws_security_group.sg.id}"]
     associate_public_ip_address = true	
     tags = {
         Name = "UbuntuServer"
