@@ -1,7 +1,5 @@
 #AWS credentials
 provider "aws" {
-    access_key = "xxxxxxx"
-    secret_key = "xxxxxxxxxx"
     region = "ap-south-1"
 }
 
