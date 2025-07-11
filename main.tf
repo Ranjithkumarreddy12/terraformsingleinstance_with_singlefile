@@ -93,7 +93,7 @@ resource "aws_security_group" "sg" {
 
 # Ec2 instance resource section. recource name is "Ubuntu_Server" 
 resource "aws_instance" "ubuntu_Server" {
-    ami = "ami-0f918f7e67a3323f"
+    ami = "ami-0f918f7e67a3323f0"
     instance_type = "t2.micro"
     key_name = "manuja"
     subnet_id = "${aws_subnet.public_subnet.id}"
