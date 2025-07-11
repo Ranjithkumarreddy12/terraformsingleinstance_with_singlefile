@@ -7,7 +7,7 @@ provider "aws" {
 
 #VCP resource section. resource name is "VPC"
 resource "aws_vpc" "VPC" {
-    cidr_block = "10.1.0.0/16"
+    cidr_block = "10.2.0.0/16"
     enable_dns_hostnames = true
     tags = {
         Name = "my_VPC"
@@ -26,7 +26,7 @@ resource "aws_internet_gateway" "IGW" {
 resource "aws_subnet" "public_subnet" {
     vpc_id = "${aws_vpc.VPC.id}"
     availability_zone = "ap-south-1a"
-    cidr_block = "10.1.1.0/24"
+    cidr_block = "10.2.1.0/24"
     tags = {
         Name = "Public_Subnet-1a"
     }
@@ -36,7 +36,7 @@ resource "aws_subnet" "public_subnet" {
 resource "aws_subnet" "private_subnet" {
     vpc_id = "${aws_vpc.VPC.id}"
     availability_zone = "ap-south-1a"
-    cidr_block = "10.1.10.0/24"
+    cidr_block = "10.2.10.0/24"
     tags = {
         Name = "Private_Subnet_1a"
     }
@@ -95,9 +95,9 @@ resource "aws_security_group" "sg" {
 
 # Ec2 instance resource section. recource name is "Ubuntu_Server" 
 resource "aws_instance" "ubuntu_Server" {
-    ami = "ami-08ee6644906ff4d6c"
+    ami = "ami-020cba7c55df1f615"
     instance_type = "t2.micro"
-    key_name = "Ranjith"
+    key_name = "manuja"
     subnet_id = "${aws_subnet.public_subnet.id}"
     vpc_security_group_ids = ["${aws_security_group.sg.id}"]
     associate_public_ip_address = true	
